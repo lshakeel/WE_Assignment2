@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>My Weather </title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<style>
+p{
+font-family: "Verdana", Verdana, sans-serif;
+overflow:hidden;
+color:rgb(100,14,146);
+}
+
+html, body{
+    height: 100%;
+}
+</style>
+
+</head>
+<body ng-app="weather">
+<div style="height:15%; width:100%">
+<p align="center", style="font-size:300%"> WEATHER </p>
+</div>
+<div style="height:70%; width:100%">
+<div ng-controller="weatherCtrl">
+        <div>
+          <p style="font-size:200%; line-height: 80%;" align="center"><img src="http://l.yimg.com/a/i/us/we/52/{{place.item.condition.code}}.gif"/><br>{{ place.location.city }}<br>{{day.format()}}<br>{{ place.item.condition.text }} | {{ ((place.item.condition.temp-32)*5)/9 | number:0}}&deg; C </p>
+          <br>
+		  <div style="display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;">
+		  <div ng-repeat="forecast in place.item.forecast" style="float:left; margin:auto">
+            <p><strong>{{ forecast.date }}</strong> - {{ forecast.text }}<br>Hi: {{ ((forecast.high - 32)*5)/9 | number:0}}&deg; C | Lo: {{ ((forecast.low-32)*5)/9 | number:0}}&deg; C</p>
+            </div>
+		  </div>
+        </div>
+</div>
+</div>
+<div style="height:15%; width:100%">
+</div>
+
+<script>
+
+var app = angular.module("weather", []);
+app.factory('weatherService', ['$http', '$q', function ($http, $q){
+      function getWeather () {
+        var deferred = $q.defer();
+        $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22islamabad%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
+          .success(function(data){
+            deferred.resolve(data.query.results.channel);
+          })
+          .error(function(err){
+            console.log('Error retrieving markets');
+            deferred.reject(err);
+          });
+        return deferred.promise;
+      }
+      
+      return {
+        getWeather: getWeather
+      };
+    }]);
+	
+app.controller('weatherCtrl', ['$scope', 'weatherService', function($scope, weatherService) {
+      function fetchWeather() {
+        weatherService.getWeather().then(function(data){
+          $scope.place = data;
+        }); 
+      }
+      
+      fetchWeather();
+    }]);
+</script>
+
+</body>

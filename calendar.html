@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Calendar </title>
+<style>
+td, th {
+ text-align:center;
+ border: 3px solid rgb(100,14,146);
+ height: 100%;
+ font-size:150%;
+}
+
+#calendarTable{
+ background-color:rgb(138,19,202);
+ border-collapse: collapse;
+ color:white;
+ border: 5px solid rgb(100,14,146);
+ font-family: "Verdana", Verdana, sans-serif;
+ overflow:hidden;
+}
+
+p{
+ font-family: "Verdana", Verdana, sans-serif;
+ overflow:hidden;
+ color:rgb(100,14,146);
+}
+</style>
+</head>
+
+<body>
+<div style="height:15%; width:100%">
+<p align="center", style="font-size:300%"> CALENDAR </p>
+</div>
+
+<div style="height:70%; width:100%">
+<table id="calendarTable" border=2 align="center" style="border-collapse:collapse" >
+<tr>
+    <th id="tableHeader" colspan=7></th>
+</tr>
+
+<tr>
+    <th>sun</th>
+	<th>mon</th>
+	<th>tue</th>
+	<th>wed</th>
+	<th>thu</th>
+	<th>fri</th>
+	<th>sat</th>
+</tr>
+<tbody id="tableBody">
+</tbody>
+<tr>
+    <td colspan=7>
+    <form name="dateChooser">
+        <select name="chooseMonth" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white;" onChange="populateTable(this.form)">
+            <option selected>January
+			<option>February
+            <option>March
+			<option>April
+			<option>May
+            <option>June
+			<option>July
+			<option>August
+            <option>September
+			<option>October
+            <option>November
+			<option>December
+    </select>
+    <select name="chooseYear" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white; margin:10px" onChange="populateTable(this.form)">
+    </select>
+    </form>
+    </td>
+</tr>
+</table>
+</div>
+
+<div style="height:15%; width:100%"></div>
+<script>
+
+var months = ["January","February","March","April","May","June","July","August",
+"September","October","November","December"];
+
+function populateTable(form) {
+    var month = form.chooseMonth.selectedIndex;
+    var year = parseInt(form.chooseYear.options[form.chooseYear.selectedIndex].text);
+    
+	var firstDate = new Date(year,month,1);
+    var firstDay =firstDate.getDay();
+	
+    var oneDay = 1000 * 60 * 60 * 24;
+    var thisMonth = new Date(year, month, 1);
+    var nextMonth = new Date(year, month + 1, 1);
+    var howMany = Math.ceil((nextMonth.getTime() - thisMonth.getTime())/oneDay);
+    document.getElementById("tableHeader").innerHTML = months[month] + " " + year;
+    
+    var dayCounter = 1;
+    var TBody;
+	var obj="tableBody";
+	 if (document.all) {
+        if (typeof obj == "string") {
+            TBody=document.all(obj);
+        } else {
+            TBody= obj.style;
+        }
+    }
+    else if (document.getElementById) {
+        if (typeof obj == "string") {
+            TBody= document.getElementById(obj);
+        } else {
+            TBody= obj.style;
+        }
+    }
+	 else   TBody= null;
+	 
+    while (TBody.rows.length > 0) {
+        TBody.deleteRow(0);
+    }
+    var newR, newC;
+    var done=false;
+    while (!done) {
+        newR = TBody.insertRow(TBody.rows.length);
+        for (var i = 0; i < 7; i++) {
+            newC = newR.insertCell(newR.cells.length);
+            if (TBody.rows.length == 1 && i < firstDay) {
+                newC.innerHTML = "";
+                continue;
+            }
+            if (dayCounter == howMany) {
+                done = true;
+            }
+            newC.innerHTML = (dayCounter <= howMany) ? dayCounter++ : ""
+        }
+        
+    }
+}
+
+function fillYears() {
+    var today = new Date();
+    var thisYear = today.getFullYear();
+    var yearChooser = document.dateChooser.chooseYear;
+    for (i = thisYear; i < thisYear + 5; i++) {
+        yearChooser.options[yearChooser.options.length] = new Option(i, i)
+    }
+    setCurrMonth(today)
+}
+
+function setCurrMonth(today) {
+    document.dateChooser.chooseMonth.selectedIndex = today.getMonth()
+}
+
+window.onload=fillYears();
+window.onload=populateTable(document.dateChooser);
+</script>
+</body>
+</html>
+           
