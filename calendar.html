@@ -3,6 +3,57 @@
 <head>
 <title>My Calendar </title>
 <style>
+
+.widget{
+     height:50px;
+	 width:180px;
+	font-size:100%;	 
+	background-color:rgb(138,19,202);
+    font-family: "Verdana", Verdana, sans-serif;
+	color:white;
+	display: inline-block;
+	vertical-align: middle;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	box-shadow: 0 0 1px rgba(138,19,202, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+	-webkit-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+	-webkit-transition-property: transform;
+	transition-property: transform;
+
+}
+.widget:before {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  content: '';
+  top: 100%;
+  left: 5%;
+  height: 10px;
+  width: 90%;
+  opacity: 0;
+  background: -webkit-radial-gradient(center, ellipse, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 80%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 80%);
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-property: transform, opacity;
+  transition-property: transform, opacity;
+}
+.widget:hover, .widget:focus, .widget:active {
+  -webkit-transform: translateY(-20px);
+  transform: translateY(-20px);
+  background:rgb(100,14,146);
+}
+.widget:hover:before, .widget:focus:before, .widget:active:before {
+  opacity: 1;
+  -webkit-transform: translateY(20px);
+  transform: translateY(20px);
+}
+
 td, th {
  text-align:center;
  border: 3px solid rgb(100,14,146);
@@ -32,7 +83,7 @@ p{
 <p align="center", style="font-size:300%"> CALENDAR </p>
 </div>
 
-<div style="height:70%; width:100%">
+<div style="height:75%; width:100%">
 <table id="calendarTable" border=2 align="center" style="border-collapse:collapse" >
 <tr>
     <th id="tableHeader" colspan=7></th>
@@ -73,8 +124,10 @@ p{
 </tr>
 </table>
 </div>
-
-<div style="height:15%; width:100%"></div>
+<br>
+<br>
+<br>
+<div  align="center" style="margin-top:5%;height:10%; width:100%; display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;"><div class="widget" style="display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;" onclick="location.reload();location.href='MyDashboard.html'">Back to Dashboard</div> </div>
 <script>
 
 var months = ["January","February","March","April","May","June","July","August",
