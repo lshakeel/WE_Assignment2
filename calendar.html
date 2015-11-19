@@ -85,49 +85,48 @@ p{
 
 <div style="height:75%; width:100%">
 <table id="calendarTable" border=2 align="center" style="border-collapse:collapse" >
-<tr>
-    <th id="tableHeader" colspan=7></th>
-</tr>
+	<tr>
+		<th id="tableHeader" colspan=7></th>
+	</tr>
 
-<tr>
-    <th>sun</th>
-	<th>mon</th>
-	<th>tue</th>
-	<th>wed</th>
-	<th>thu</th>
-	<th>fri</th>
-	<th>sat</th>
-</tr>
-<tbody id="tableBody">
-</tbody>
-<tr>
-    <td colspan=7>
-    <form name="dateChooser">
-        <select name="chooseMonth" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white;" onChange="populateTable(this.form)">
-            <option selected>January
-			<option>February
-            <option>March
-			<option>April
-			<option>May
-            <option>June
-			<option>July
-			<option>August
-            <option>September
-			<option>October
-            <option>November
-			<option>December
-    </select>
-    <select name="chooseYear" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white; margin:10px" onChange="populateTable(this.form)">
-    </select>
-    </form>
-    </td>
-</tr>
+	<tr>
+		<th>sun</th>
+		<th>mon</th>
+		<th>tue</th>
+		<th>wed</th>
+		<th>thu</th>
+		<th>fri</th>
+		<th>sat</th>
+	</tr>
+	<tbody id="tableBody"></tbody>
+	<tr>
+		<td colspan=7>
+		<form name="dateChooser">
+			<select name="chooseMonth" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white;" onChange="populateTable(this.form)">
+				<option selected>January
+				<option>February
+				<option>March
+				<option>April
+				<option>May
+				<option>June
+				<option>July
+				<option>August
+				<option>September
+				<option>October
+				<option>November
+				<option>December
+			</select>
+			<select name="chooseYear" style="font-size:100%; color:white; background-color:rgb(138,19,202);border: 2px solid white; margin:10px" onChange="populateTable(this.form)">
+				</select>
+		</form>
+		</td>
+	</tr>
 </table>
 </div>
 <br>
 <br>
 <br>
-<div  align="center" style="margin-top:5%;height:10%; width:100%; display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;"><div class="widget" style="display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;" onclick="location.reload();location.href='MyDashboard.html'">Back to Dashboard</div> </div>
+<div  align="center" style="margin-top:2%;height:10%; width:100%; display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;"><div class="widget" style="display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;" onclick="location.reload();location.href='MyDashboard.html'">Back to Dashboard</div> </div>
 <script>
 
 var months = ["January","February","March","April","May","June","July","August",
@@ -191,10 +190,14 @@ function fillYears() {
     var today = new Date();
     var thisYear = today.getFullYear();
     var yearChooser = document.dateChooser.chooseYear;
-    for (i = thisYear; i < thisYear + 5; i++) {
-        yearChooser.options[yearChooser.options.length] = new Option(i, i)
+    for (i = 1900, j=0; i < 3000; i++,j++) {
+        yearChooser.options[yearChooser.options.length] = new Option(i, i);
+		if(i==thisYear)
+		{
+		document.getElementsByName('chooseYear')[0].selectedIndex=j;//='selected';
+		}
     }
-    setCurrMonth(today)
+    setCurrMonth(today);
 }
 
 function setCurrMonth(today) {

@@ -67,12 +67,12 @@ p{
 
 <body>
 <div style="height:15%; width:100%">
-<p align="center", style="font-size:300%"> CLOCK </p>
+	<p align="center", style="font-size:300%"> CLOCK </p>
 </div>
 <div style="height:35%; width:100%">
 <div style="margin-top: 100px; height:100%; width:80%">
-<canvas id="canvas" width="400" height="400" style="background-color:rgba(161,64,222,0); align:center;  position: absolute; top: 0;  bottom: 0;  left: 0;  right: 0;padding: 0; margin: auto; margin-top:150px">
-</canvas>
+	<canvas id="canvas" width="400" height="400" style="background-color:rgba(161,64,222,0); align:center;  position: absolute; top: 0;  bottom: 0;  left: 0;  right: 0;padding: 0; margin: auto; margin-top:150px">
+	</canvas>
 </div>
 </div>
 <div  align="center" style="height:50%; width:100%; display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;"><div class="widget" style="display: flex;  flex-direction: row;  flex-wrap: wrap;  justify-content: center;  align-items: center;" onclick="location.reload();location.href='MyDashboard.html'">Back to Dashboard</div> </div>
@@ -86,77 +86,73 @@ radius = radius * 0.90
 setInterval(drawClock, 100);
 
 function drawClock() {
-  drawFace(cctx, radius);
-  drawNumbers(cctx, radius);
-  drawTime(cctx, radius);
+  drawFace();
+  drawNumbers();
+  drawTime();
 }
 
-function drawFace(ctx, radius) {
+function drawFace() {
   var grad;
-  ctx.beginPath();
-  ctx.arc(0, 0, radius, 0, 2*Math.PI);
-  ctx.fillStyle = 'white';
-  ctx.fill();
-  grad = ctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
+  cctx.beginPath();
+  cctx.arc(0, 0, radius, 0, 2*Math.PI);
+  cctx.fillStyle = 'white';
+  cctx.fill();
+  grad = cctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
   grad.addColorStop(0, 'rgb(219,158,241)');
   grad.addColorStop(0.5, 'rgb(161,64,222)');
   grad.addColorStop(1, 'rgb(138,19,202)');
-  ctx.strokeStyle = grad;
-  ctx.lineWidth = radius*0.1;
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(0, 0, radius*0.1, 0, 2*Math.PI);
-  ctx.fillStyle = 'rgb(138,19,202)';
-  ctx.fill();
+  cctx.strokeStyle = grad;
+  cctx.lineWidth = 15;
+  cctx.stroke();
+  cctx.beginPath();
+  cctx.arc(0, 0, radius*0.1, 0, 2*Math.PI);
+  cctx.fillStyle = 'rgb(138,19,202)';
+  cctx.fill();
 }
 
-function drawNumbers(ctx, radius) {
-  var ang;
+function drawNumbers() {
   var num;
-  ctx.font = radius*0.15 + "px verdana";
-  ctx.textBaseline="middle";
-  ctx.textAlign="center";
+  cctx.font = 30 + "px verdana";
+  cctx.textBaseline="middle";
+  cctx.textAlign="center";
   for(num = 1; num <= 12; num++){
     ang = num * Math.PI / 6;
-    ctx.rotate(ang);
-    ctx.translate(0, -radius*0.85);
-    ctx.rotate(-ang);
-    ctx.fillText(num.toString(), 0, 0);
-    ctx.rotate(ang);
-    ctx.translate(0, radius*0.85);
-    ctx.rotate(-ang);
+    cctx.rotate((num * Math.PI / 6));
+    cctx.translate(0, -150);
+    cctx.rotate(-(num * Math.PI / 6));
+    cctx.fillText(num.toString(), 0, 0);
+    cctx.rotate((num * Math.PI / 6));
+    cctx.translate(0, 150);
+    cctx.rotate(-(num * Math.PI / 6));
   }
 }
 
-function drawTime(ctx, radius){
+function drawTime(){
     var now = new Date();
     var hour = now.getHours();
     var minute = now.getMinutes();
     var second = now.getSeconds();
-    //hour
     hour=hour%12;
     hour=(hour*Math.PI/6)+
     (minute*Math.PI/(6*60))+
     (second*Math.PI/(360*60));
-    drawHand(ctx, hour, radius*0.5, radius*0.07);
-    //minute
+    drawHand(hour, radius*0.5, radius*0.07);
     minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
-    drawHand(ctx, minute, radius*0.8, radius*0.07);
-    // second
+    drawHand(minute, radius*0.8, radius*0.07);
     second=(second*Math.PI/30);
-    drawHand(ctx, second, radius*0.9, radius*0.02);
+    drawHand(second, radius*0.9, radius*0.02);
 }
 
-function drawHand(ctx, pos, length, width) {
-    ctx.beginPath();
-    ctx.lineWidth = width;
-    ctx.lineCap = "round";
-    ctx.moveTo(0,0);
-    ctx.rotate(pos);
-    ctx.lineTo(0, -length);
-	ctx.strokeStyle = 'rgb(219,158,241)';
-    ctx.stroke();
-    ctx.rotate(-pos);
+function drawHand(pos, length, width) {
+    cctx.beginPath();
+    cctx.lineWidth = width;
+    cctx.lineCap = "round";
+    cctx.moveTo(0,0);
+    cctx.rotate(pos);
+    cctx.lineTo(0, -length);
+	cctx.strokeStyle = 'rgb(219,158,241)';
+    cctx.stroke();
+    cctx.rotate(-pos);
 }
 </script>
 
